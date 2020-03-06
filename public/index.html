@@ -1,364 +1,387 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Juego</title>
-    <style>
-      body {
-        position: fixed;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        overflow: hidden;
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Juego</title>
+  <style>
+    body {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .figura {
+      position: absolute;
+      display: block;
+      font-size: 35px;
+    }
+
+    .figura1 {
+      position: absolute;
+      display: block;
+      font-size: 50px;
+    }
+
+    h2 {
+      color: #b3d0e3;
+      font-size: 50px;
+    }
+  </style>
+  <script>
+    var enemigosVivos = 15;
+    var endGame = false;
+    function gameOver() {
+      if (enemigosVivos == 0) {
+        alert("HAS GANADO LA PARTIDA");
+      } else {
+        alert("FIN DEL JUEGO");
       }
+      endGame = true;
+    }
 
-      .figura {
-        position: absolute;
-        display: block;
-        font-size: 50px;
+    customElements.define("figura-obni", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura")
+        this.style.fontSize = "40px";
       }
-      .figura1 {
-        position: absolute;
-        display: block;
-        font-size: 50px;
+      muévete() {
+        let y = 50;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
       }
-      h2{
-        color: #b3d0e3; 
+    });
+    customElements.define("figura-obni1", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F47E;";
+        this.style.fontSize = "40px";
+        this.gameOver();
       }
-    </style>
-    <script>
+      muévete2() {
+        let y = 100;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 50 : this.x + 10;
 
-      customElements.define("figura-obni", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura")
-          this.style.fontSize = "40px";
-        }
-        muévete() {
-          let y = 50;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
-      customElements.define("figura-obni1", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F47E;";
-          this.style.fontSize = "40px";
-        }
-        muévete2() {
-          let y = 100;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 50 : this.x + 10;
-        }
-      });
-      customElements.define("figura-obni3", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F47E;";
-          this.innerHTML = "&#x1F47E;";
-          this.style.fontSize = "40px";
-        }
-        muévete3() {
+      }
+    });
+    customElements.define("figura-obni3", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F47E;";
+        this.innerHTML = "&#x1F47E;";
+        this.style.fontSize = "40px";
+      }
+      muévete3() {
 
-          let y = 300;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 50 : this.x + 10;
-        }
-      });
-      customElements.define("figura-obni4", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F47E;";
-          this.style.fontSize = "40px";
-        }
-        muévete4() {
+        let y = 300;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 50 : this.x + 10;
+      }
+    });
+    customElements.define("figura-obni4", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F47E;";
+        this.style.fontSize = "40px";
+      }
+      muévete4() {
 
-          let y = 450;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 50 : this.x + 10;
-        }
-      });
-      customElements.define("figura-roca", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F311;";
-          this.style.fontSize = "40px";
-        }
-        muévete5() {
+        let y = 450;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 50 : this.x + 10;
+      }
+    });
+    customElements.define("figura-roca", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F311;";
+        this.style.fontSize = "40px";
+      }
+      muévete5() {
 
-          let y = 370;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
-      customElements.define("figura-roca2", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F311;";
-          this.style.fontSize = "40px";
-        }
-        muévete6() {
+        let y = 370;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
+      }
+    });
+    customElements.define("figura-roca2", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F311;";
+        this.style.fontSize = "40px";
+      }
+      muévete6() {
 
-          let y = 180;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
-      customElements.define("figura-alien", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F6F8;";
-          this.style.fontSize = "40px";
-        }
-        muévete7() {
+        let y = 180;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
+      }
+    });
+    customElements.define("figura-alien", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F6F8;";
+        this.style.fontSize = "40px";
+      }
+      muévete7() {
 
-          let y = 100;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
-      customElements.define("figura-alien2", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F6F8;";
-          this.style.fontSize = "40px";
-        }
-        muévete8() {
+        let y = 100;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
+      }
+    });
+    customElements.define("figura-alien2", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F6F8;";
+        this.style.fontSize = "40px";
+      }
+      muévete8() {
 
-          let y = 200;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
-      customElements.define("figura-alien3", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F6F8;";
-          this.style.fontSize = "40px";
-        }
-        muévete9() {
+        let y = 200;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
+      }
+    });
+    customElements.define("figura-alien3", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F6F8;";
+        this.style.fontSize = "40px";
+      }
+      muévete9() {
 
-          let y = 300;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
-      customElements.define("figura-alien4", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F6F8;";
-          this.style.fontSize = "40px";
-        }
-        muévete10() {
+        let y = 300;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
+      }
+    });
+    customElements.define("figura-alien4", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F6F8;";
+        this.style.fontSize = "40px";
+      }
+      muévete10() {
 
-          let y = 400;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
+        let y = 400;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
+      }
+    });
 
-      customElements.define("figura-estre", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F30C;";
-          this.style.fontSize = "40px";
-        }
-        muévete11() {
+    customElements.define("figura-estre", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F30C;";
+        this.style.fontSize = "40px";
+      }
+      muévete11() {
 
-          let y = 150;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
-      customElements.define("figura-estre2", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F30C;";
-          this.style.fontSize = "40px";
-        }
-        muévete12() {
+        let y = 150;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
+      }
+    });
+    customElements.define("figura-estre2", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F30C;";
+        this.style.fontSize = "40px";
+      }
+      muévete12() {
 
-          let y = 250;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
-      customElements.define("figura-estre3", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F30C;";
-          this.style.fontSize = "40px";
-        }
-        muévete13() {
+        let y = 250;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
+      }
+    });
+    customElements.define("figura-estre3", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F30C;";
+        this.style.fontSize = "40px";
+      }
+      muévete13() {
 
-          let y = 350;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
-      customElements.define("figura-estre4", class extends HTMLElement {
-        connectedCallback() {
-          this.x = 30;
-          this.classList.add("figura1")
-          this.innerHTML = "&#x1F30C;";
-          this.style.fontSize = "40px";
-        }
-        muévete14() {
+        let y = 350;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
+      }
+    });
+    customElements.define("figura-estre4", class extends HTMLElement {
+      connectedCallback() {
+        this.x = 30;
+        this.classList.add("figura1")
+        this.innerHTML = "&#x1F30C;";
+        this.style.fontSize = "40px";
+      }
+      muévete14() {
 
-          let y = 450;
-          this.style.right = `${this.x}px`;
-          this.style.top = `${y}px`;
-          this.x = this.x > 800 ? 0 : this.x + 10;
-        }
-      });
+        let y = 450;
+        this.style.right = `${this.x}px`;
+        this.style.top = `${y}px`;
+        this.x = this.x > 800 ? 0 : this.x + 10;
+      }
+    });
 
-      customElements.define("figura-nave", class extends HTMLElement {
-        connectedCallback() {
-          this.classList.add("figura")
-          this.innerHTML += "&#x1F680;&#xFE0F;";
-          this.x = 500;
-          this.y = 300;
+    customElements.define("figura-nave", class extends HTMLElement {
+      connectedCallback() {
+        this.classList.add("figura")
+        this.innerHTML += "&#x1F680;&#xFE0F;";
+        this.x = 500;
+        this.y = 300;
+      }
+      sube() {
+        this.y -= 20;
+        this.muévete()
+      }
+      baja() {
+        this.y += 20;
+        this.muévete()
+      }
+      izquierda() {
+        this.x -= 20;
+        this.muévete()
+      }
+      derecha() {
+        this.x += 20;
+        this.muévete()
+      }
+      muévete() {
+        this.pájaros = Array.from(document.querySelectorAll("figura-obni"));
+        this.style.left = `${this.x}px`;
+        this.style.top = `${this.y}px`;
+        var incr = 60;
+        for (const pájaro of this.pájaros) {
+          pájaro.muévete(this.x + incr, this.y + incr);
+          incr += 80;
+
         }
-        sube() {
-          this.y -= 20;
-          this.muévete()
-        }
-        baja() {
-          this.y += 20;
-          this.muévete()
-        }
-        izquierda() {
-          this.x -= 20;
-          this.muévete()
-        }
-        derecha() {
-          this.x += 20;
-          this.muévete()
-        }
-        muévete() {
-          this.pájaros = Array.from(document.querySelectorAll("figura-obni"));
-          this.style.left = `${this.x}px`;
-          this.style.top = `${this.y}px`;
-          var incr = 60;
-          for (const pájaro of this.pájaros) {
-            pájaro.muévete(this.x + incr, this.y + incr);
-            incr += 80;
-          }
-        }
-      });
-    </script>
-  </head>
-  <body background="juego.jpg">
-    <figura-nave id="nave"></figura-nave>
-    <figura-obni id="ovni"> </figura-obni>
-    <figura-obni1 id="ovni1"> </figura-obni1>
-    <figura-obni3 id="ovni3"> </figura-obni3>
-    <figura-obni4 id="ovni4"> </figura-obni4>
-    <figura-roca id="roca"> </figura-roca>
-    <figura-roca2 id="roca2"> </figura-roca2>
-    <figura-alien id="alien"> </figura-alien>
-    <figura-alien2 id="alien2"> </figura-alien2>
-    <figura-alien3 id="alien3"> </figura-alien3>
-    <figura-alien4 id="alien4"> </figura-alien4>
-    <figura-estre id="estre"> </figura-estre>
-    <figura-estre2 id="estre2"> </figura-estre2>
-    <figura-estre3 id="estre3"> </figura-estre3>
-    <figura-estre4 id="estre4"> </figura-estre4>
-    <center><h2><footer>Conquista la galaxia</footer></h2></center>
-    <script>
-      setInterval(() => ovni.muévete1(), 160);
-      setInterval(() => ovni1.muévete2(), 40);
-      setInterval(() => ovni3.muévete3(), 40);
-      setInterval(() => ovni4.muévete4(), 25);
-      setInterval(() => roca.muévete5(), 35);
-      setInterval(() => roca2.muévete6(), 30);
-      setInterval(() => alien.muévete7(), 50);
-      setInterval(() => alien2.muévete8(), 50);
-      setInterval(() => alien3.muévete9(), 50);
-      setInterval(() => alien4.muévete10(), 50);
-      setInterval(() => estre.muévete11(), 70);
-      setInterval(() => estre2.muévete12(), 70);
-      setInterval(() => estre3.muévete13(), 70);
-      setInterval(() => estre4.muévete14(), 70);
-    </script>
-    <script>
-      nave.muévete();
-      document.addEventListener("keydown", evt => {
-        switch (evt.key) {
-          case "ArrowLeft":
-            nave.izquierda();
-            break;
-          case "ArrowRight":
-            nave.derecha();
-            break;
-          case "ArrowUp":
-            nave.sube();
-            break;
-          case "ArrowDown":
-            nave.baja();
-            break;
-        }
-      });
-      let iniciaX = null;
-      let iniciaY = null;
-      document.addEventListener('touchstart', evt => {
-        const toquInicial = evt.touches[0];
-        iniciaX = toquInicial.clientX;
-        iniciaY = toquInicial.clientY;
-      });
-      document.addEventListener('touchmove', evt => {
-        if (iniciaX && iniciaY) {
-          const mueve = evt.touches[0];
-          var mueveX = mueve.clientX;
-          var mueveY = mueve.clientY;
-          var difX = mueveX - iniciaX;
-          var difY = mueveY - iniciaY;
-          if (Math.abs(difX) + Math.abs(difY) > 150) {
-            if (Math.abs(difX) > Math.abs(difY)) {
-              if (difX > 70) {
-                nave.derecha();
-              } else {
-                nave.izquierda();
-              }
-            } else if (difY > 70) {
-              nave.baja();
+      }
+    });
+  </script>
+</head>
+
+<body background="juego.jpg">
+  <figura-nave id="nave"></figura-nave>
+  <figura-obni id="ovni"> </figura-obni>
+  <figura-obni1 id="ovni1"> </figura-obni1>
+  <figura-obni3 id="ovni3"> </figura-obni3>
+  <figura-obni4 id="ovni4"> </figura-obni4>
+  <figura-roca id="roca"> </figura-roca>
+  <figura-roca2 id="roca2"> </figura-roca2>
+  <figura-alien id="alien"> </figura-alien>
+  <figura-alien2 id="alien2"> </figura-alien2>
+  <figura-alien3 id="alien3"> </figura-alien3>
+  <figura-alien4 id="alien4"> </figura-alien4>
+  <figura-estre id="estre"> </figura-estre>
+  <figura-estre2 id="estre2"> </figura-estre2>
+  <figura-estre3 id="estre3"> </figura-estre3>
+  <figura-estre4 id="estre4"> </figura-estre4>
+  <center>
+    <h2>
+      <footer>Conquista la galaxia</footer>
+    </h2>
+  </center>
+  <script>
+    setInterval(() => ovni.muévete1(), 160);
+    setInterval(() => ovni1.muévete2(), 40);
+    setInterval(() => ovni3.muévete3(), 40);
+    setInterval(() => ovni4.muévete4(), 25);
+    setInterval(() => roca.muévete5(), 35);
+    setInterval(() => roca2.muévete6(), 30);
+    setInterval(() => alien.muévete7(), 50);
+    setInterval(() => alien2.muévete8(), 50);
+    setInterval(() => alien3.muévete9(), 50);
+    setInterval(() => alien4.muévete10(), 50);
+    setInterval(() => estre.muévete11(), 70);
+    setInterval(() => estre2.muévete12(), 70);
+    setInterval(() => estre3.muévete13(), 70);
+    setInterval(() => estre4.muévete14(), 70);
+  </script>
+  <script>
+    nave.muévete();
+    document.addEventListener("keydown", evt => {
+      switch (evt.key) {
+        case "ArrowLeft":
+          nave.izquierda();
+          break;
+        case "ArrowRight":
+          nave.derecha();
+          break;
+        case "ArrowUp":
+          nave.sube();
+          break;
+        case "ArrowDown":
+          nave.baja();
+          break;
+      }
+    });
+    let iniciaX = null;
+    let iniciaY = null;
+    document.addEventListener('touchstart', evt => {
+      const toquInicial = evt.touches[0];
+      iniciaX = toquInicial.clientX;
+      iniciaY = toquInicial.clientY;
+    });
+    document.addEventListener('touchmove', evt => {
+      if (iniciaX && iniciaY) {
+        const mueve = evt.touches[0];
+        var mueveX = mueve.clientX;
+        var mueveY = mueve.clientY;
+        var difX = mueveX - iniciaX;
+        var difY = mueveY - iniciaY;
+        if (Math.abs(difX) + Math.abs(difY) > 150) {
+          if (Math.abs(difX) > Math.abs(difY)) {
+            if (difX > 70) {
+              nave.derecha();
             } else {
-              nave.sube();
+              nave.izquierda();
             }
-            iniciaX = null;
-            iniciaY = null;
+          } else if (difY > 70) {
+            nave.baja();
+          } else {
+            nave.sube();
           }
+          iniciaX = null;
+          iniciaY = null;
         }
-      });
-    </script>
-  </body>
+      }
+    });
+  </script>
+</body>
+
 </html>
